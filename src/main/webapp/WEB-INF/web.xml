@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd" id="WebApp_ID" version="5.0">
+  <display-name>ExercícioLoginV2</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>Login</display-name>
+    <servlet-name>Login</servlet-name>
+    <servlet-class>login.Login</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Login</servlet-name>
+    <url-pattern>/Login</url-pattern>
+    <url-pattern>/login.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>LoginSucces</display-name>
+    <servlet-name>LoginSucces</servlet-name>
+    <servlet-class>login.LoginSucces</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginSucces</servlet-name>
+    <url-pattern>/LoginSucces</url-pattern>
+    <url-pattern>/loginSucces.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>LoggedIn</display-name>
+    <servlet-name>LoggedIn</servlet-name>
+    <servlet-class>login.LoggedIn</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoggedIn</servlet-name>
+    <url-pattern>/LoggedIn</url-pattern>
+    <url-pattern>/success.do</url-pattern>
+  </servlet-mapping>
+</web-app>
