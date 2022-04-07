@@ -40,12 +40,16 @@ public class Login extends HttpServlet {
 		String inputPassword = req.getParameter("password");
 		
 		HttpSession userSession = req.getSession();
+		userSession.setAttribute("loggedIn", false);
+		
 		LocalDateTime activeDateTime = LocalDateTime.now();
 		
-		if(userSession.isNew()) {
-			if (login(inputUsername, inputPassword)) {
+		if(login(inputUsername, inputPassword)) {
+			// credenciais válidas
+			
+			if (userSession.isNew()) {
 				String userSessionId = "umaIDgeradaQualquerAf4387fw39q84d98qd";
-								
+				
 				userSession.setAttribute("sessionID", userSessionId);
 				userSession.setAttribute("lastTimeActive", activeDateTime);
 				userSession.setMaxInactiveInterval(3600);
@@ -53,43 +57,29 @@ public class Login extends HttpServlet {
 				userSession.setAttribute("username", inputUsername);
 				
 			} else {
-				userSession.setAttribute("loggedIn", false);
-				if (!res.isCommitted()) {
-					res.sendError(400, "Credenciais Inválidas");
-					return;
-				}
+				userSession.setAttribute("loggedIn", true);
+				userSession.setAttribute("username", inputUsername);
 			}
-	
-		} else {
-			boolean loginAuth = (boolean) userSession.getAttribute("loggedIn");
 			
-			if(!loginAuth) {
-				if(login(inputUsername, inputPassword) ) {
-					userSession.setAttribute("lastTimeActive", activeDateTime);
-					userSession.setAttribute("loggedIn", true);
-					userSession.setAttribute("username", inputUsername);
-					
-				} else {
-					userSession.setAttribute("loggedIn", false);
-					
-					if (!res.isCommitted()) {
-						res.sendError(400, "Credenciais Inválidas");
-						return;
-					}
-				}
-			}
+		} else {
+			// credenciais inválidas
+			userSession.setAttribute("loggedIn", false);
 		}
 		
-		if(((boolean) userSession.getAttribute("loggedIn")) && !res.isCommitted()) {
-			RequestDispatcher reqDispatcher = context.getRequestDispatcher("/success.do");
-//			req.setAttribute("inputUsername", inputUsername);
-//			req.setAttribute("inputPassword", inputPassword);
-			
-			reqDispatcher.forward(req, res);
-			return;
-		} else {
-			res.sendError(400, "Request ruim");
-			return;
+		if (!res.isCommitted()) {
+			if ((boolean) userSession.getAttribute("loggedIn")) {
+				// vai pra logado
+				RequestDispatcher reqDispatcher = context.getRequestDispatcher("/success.do");
+				req.setAttribute("inputUsername", inputUsername);
+				req.setAttribute("inputPassword", inputPassword);
+				
+				reqDispatcher.forward(req, res);
+				return;
+				
+			} else {
+				res.sendError(400, "Credenciais Inválidas");
+				return;
+			}
 		}
 	}
 }
